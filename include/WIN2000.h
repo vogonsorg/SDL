@@ -10,9 +10,9 @@
 #define KBD_DEVICE_HANDLE    0xF001
 #define RAWINPUTHANDLETABLESIZE     32
 
-#define CTL_CODE( DeviceType, Function, Method, Access ) (                 \
-    ((DeviceType) << 16) | ((Access) << 14) | ((Function) << 2) | (Method) \
-)
+//#define CTL_CODE( DeviceType, Function, Method, Access ) (                 \
+//    ((DeviceType) << 16) | ((Access) << 14) | ((Function) << 2) | (Method) \
+//)
 
 #define MAX_DEVICE_NAME      32
 #define MOUSE_DEVICE_HANDLE  0x1337
