@@ -31,6 +31,7 @@
 #include "SDL_rawinputjoystick_c.h"
 #include "SDL_xinputjoystick_c.h"
 #include "../hidapi/SDL_hidapijoystick_c.h"
+#include "WIN2000.h"
 
 #ifndef DIDFT_OPTIONAL
 #define DIDFT_OPTIONAL      0x80000000
