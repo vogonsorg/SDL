@@ -30,6 +30,7 @@
 #include "SDL_xinputjoystick_c.h"
 #include "SDL_rawinputjoystick_c.h"
 #include "../hidapi/SDL_hidapijoystick_c.h"
+#include "WIN2000.h"
 
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
@@ -137,7 +138,7 @@ GuessXInputDevice(Uint8 userid, Uint16 *pVID, Uint16 *pPID, Uint16 *pVersion)
     PRAWINPUTDEVICELIST devices = NULL;
     UINT i, j, device_count = 0;
 
-    if ((GetRawInputDeviceList(NULL, &device_count, sizeof(RAWINPUTDEVICELIST)) == -1) || (!device_count)) {
+    if ((XP_GetRawInputDeviceList(NULL, &device_count, sizeof(RAWINPUTDEVICELIST)) == -1) || (!device_count)) {
         return;  /* oh well. */
     }
 
@@ -146,7 +147,7 @@ GuessXInputDevice(Uint8 userid, Uint16 *pVID, Uint16 *pPID, Uint16 *pVersion)
         return;
     }
 
-    if (GetRawInputDeviceList(devices, &device_count, sizeof(RAWINPUTDEVICELIST)) == -1) {
+    if (XP_GetRawInputDeviceList(devices, &device_count, sizeof(RAWINPUTDEVICELIST)) == -1) {
         SDL_free(devices);
         return;  /* oh well. */
     }
@@ -161,8 +162,8 @@ GuessXInputDevice(Uint8 userid, Uint16 *pVID, Uint16 *pPID, Uint16 *pVersion)
 
             rdi.cbSize = sizeof(rdi);
             if (devices[i].dwType == RIM_TYPEHID &&
-                GetRawInputDeviceInfoA(devices[i].hDevice, RIDI_DEVICEINFO, &rdi, &rdiSize) != (UINT)-1 &&
-                GetRawInputDeviceInfoA(devices[i].hDevice, RIDI_DEVICENAME, devName, &nameSize) != (UINT)-1) {
+                XP_GetRawInputDeviceInfoA(devices[i].hDevice, RIDI_DEVICEINFO, &rdi, &rdiSize) != (UINT)-1 &&
+                XP_GetRawInputDeviceInfoA(devices[i].hDevice, RIDI_DEVICENAME, devName, &nameSize) != (UINT)-1) {
                 if (SDL_strcmp(devName, s_arrXInputDevicePath[userid]) == 0) {
                     *pVID = (Uint16)rdi.hid.dwVendorId;
                     *pPID = (Uint16)rdi.hid.dwProductId;
@@ -182,8 +183,8 @@ GuessXInputDevice(Uint8 userid, Uint16 *pVID, Uint16 *pPID, Uint16 *pVersion)
 
         rdi.cbSize = sizeof(rdi);
         if (devices[i].dwType == RIM_TYPEHID &&
-            GetRawInputDeviceInfoA(devices[i].hDevice, RIDI_DEVICEINFO, &rdi, &rdiSize) != (UINT)-1 &&
-            GetRawInputDeviceInfoA(devices[i].hDevice, RIDI_DEVICENAME, devName, &nameSize) != (UINT)-1) {
+            XP_GetRawInputDeviceInfoA(devices[i].hDevice, RIDI_DEVICEINFO, &rdi, &rdiSize) != (UINT)-1 &&
+            XP_GetRawInputDeviceInfoA(devices[i].hDevice, RIDI_DEVICENAME, devName, &nameSize) != (UINT)-1) {
 #ifdef DEBUG_JOYSTICK
             SDL_Log("Raw input device: VID = 0x%x, PID = 0x%x, %s\n", rdi.hid.dwVendorId, rdi.hid.dwProductId, devName);
 #endif
