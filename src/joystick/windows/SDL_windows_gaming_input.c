@@ -36,6 +36,7 @@
 #include <cfgmgr32.h>
 #include <objidlbase.h>
 #include <roapi.h>
+#include "WIN2000.h"
 
 
 #ifdef ____FIReference_1_INT32_INTERFACE_DEFINED__
@@ -121,7 +122,7 @@ SDL_IsXInputDevice(Uint16 vendor, Uint16 product)
     }
 
     /* Go through RAWINPUT (WinXP and later) to find HID devices. */
-    if ((GetRawInputDeviceList(NULL, &raw_device_count, sizeof(RAWINPUTDEVICELIST)) == -1) || (!raw_device_count)) {
+    if ((XP_InputDeviceList(NULL, &raw_device_count, sizeof(RAWINPUTDEVICELIST)) == -1) || (!raw_device_count)) {
         return SDL_FALSE;  /* oh well. */
     }
 
@@ -131,7 +132,7 @@ SDL_IsXInputDevice(Uint16 vendor, Uint16 product)
         return SDL_FALSE;
     }
 
-    if (GetRawInputDeviceList(raw_devices, &raw_device_count, sizeof(RAWINPUTDEVICELIST)) == -1) {
+    if (XP_GetRawInputDeviceList(raw_devices, &raw_device_count, sizeof(RAWINPUTDEVICELIST)) == -1) {
         SDL_free(raw_devices);
         raw_devices = NULL;
         return SDL_FALSE;  /* oh well. */
