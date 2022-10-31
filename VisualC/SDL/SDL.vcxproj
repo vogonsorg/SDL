@@ -216,6 +216,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\begin_code.h" />
     <ClInclude Include="..\..\include\close_code.h" />
+    <ClInclude Include="..\..\include\myList.h" />
     <ClInclude Include="..\..\include\SDL.h" />
     <ClInclude Include="..\..\include\SDL_assert.h" />
     <ClInclude Include="..\..\include\SDL_atomic.h" />
@@ -311,6 +312,7 @@
     <ClInclude Include="..\..\src\dynapi\SDL_dynapi.h" />
     <ClInclude Include="..\..\src\dynapi\SDL_dynapi_overrides.h" />
     <ClInclude Include="..\..\src\dynapi\SDL_dynapi_procs.h" />
+    <ClInclude Include="..\..\src\events\WIN2000.h" />
     <ClInclude Include="..\..\src\events\blank_cursor.h" />
     <ClInclude Include="..\..\src\events\default_cursor.h" />
     <ClInclude Include="..\..\src\events\scancodes_windows.h" />
@@ -560,6 +562,7 @@
     <ClCompile Include="..\..\src\SDL_hints.c" />
     <ClCompile Include="..\..\src\SDL_log.c" />
     <ClCompile Include="..\..\src\SDL_utils.c" />
+    <ClCompile Include="..\..\src\WIN2000.c" />
     <ClCompile Include="..\..\src\sensor\dummy\SDL_dummysensor.c" />
     <ClCompile Include="..\..\src\sensor\SDL_sensor.c" />
     <ClCompile Include="..\..\src\sensor\windows\SDL_windowssensor.c" />
