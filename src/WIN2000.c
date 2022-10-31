@@ -17,7 +17,7 @@ int UseDirectInput;
 DirectInput8Create_t dlDirectInput8Create;
 
 /*HANDLE to the heap*/
-static HANDLE hHeap = NULL;
+HANDLE                hHeap = NULL;
 
 static HHOOK rawInputMouseHook = NULL;
 static HHOOK rawInputKeyboardHook = NULL;
