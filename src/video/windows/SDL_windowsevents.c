@@ -35,6 +35,7 @@
 #include "../../events/scancodes_windows.h"
 #include "SDL_hints.h"
 #include "SDL_log.h"
+#include "myList.h"
 
 /* Dropfile support */
 #include <shellapi.h>
@@ -109,6 +110,70 @@
 #ifndef IS_SURROGATE_PAIR
 #define IS_SURROGATE_PAIR(h,l) (IS_HIGH_SURROGATE(h) && IS_LOW_SURROGATE(l))
 #endif
+
+
+static myList * rawInputHandleList = NULL;
+
+UINT XP_GetRawInputData(HRAWINPUT hRawInput, UINT uiCommand, LPVOID pData, PUINT pcbSize, UINT cbSizeHeader) {
+    UINT res = 0;
+    RAWINPUT *ri = (RAWINPUT*)hRawInput;
+	
+	/*if(cbSizeHeader != sizeof(RAWINPUTHEADER)) {
+		if(DbgPrintf) DbgPrintf(DBG_WARN, S_YELLOW "user32: sizeof(RAWINPUTHEADER) does not match expected\n");
+	}*/
+	
+	GetLock(rawInputHandleList);
+
+	//Ain't in the list no more
+    if(!hRawInput || !IsInListByVal(rawInputHandleList, (DWORD)hRawInput)) {
+		ReleaseLock(rawInputHandleList);
+        return ((UINT)-1);
+	}
+    
+    if(!pData) {
+        switch(uiCommand) {
+            case RID_INPUT:
+                *pcbSize = sizeof(RAWINPUT);
+                res = 0;
+                break;
+            
+            case RID_HEADER:
+                *pcbSize = sizeof(RAWINPUTHEADER);
+                res = 0;
+                break;
+            
+            default:
+                *pcbSize = 0;
+                res = (UINT)-1;
+        }
+    } else {
+        switch(uiCommand) {
+            case RID_INPUT:
+                if(*pcbSize >= sizeof(RAWINPUT)) {
+                    res = *pcbSize;
+                    RtlCopyMemory(pData, ri, sizeof(RAWINPUT));
+                } else {
+					res = (UINT)-1;
+				}
+                break;
+            
+            case RID_HEADER:
+                if(*pcbSize >= sizeof(RAWINPUTHEADER)) {
+                    res = *pcbSize;
+                    RtlCopyMemory(pData, &ri->header, sizeof(RAWINPUTHEADER));
+                } else {
+					res = (UINT)-1;
+				}
+                break;
+            
+            default:
+                res = (UINT)-1;
+        }
+    }
+    
+	ReleaseLock(rawInputHandleList);
+    return res;
+}
 
 static SDL_Scancode
 VKeytoScancodeFallback(WPARAM vkey)
@@ -800,7 +865,7 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 break;
             }
 
-            GetRawInputData(hRawInput, RID_INPUT, &inp, &size, sizeof(RAWINPUTHEADER));
+            XP_GetRawInputData(hRawInput, RID_INPUT, &inp, &size, sizeof(RAWINPUTHEADER));
 
             /* Mouse data (ignoring synthetic mouse events generated for touchscreens) */
             if (inp.header.dwType == RIM_TYPEMOUSE) {
