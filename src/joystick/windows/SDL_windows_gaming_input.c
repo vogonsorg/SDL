@@ -122,7 +122,7 @@ SDL_IsXInputDevice(Uint16 vendor, Uint16 product)
     }
 
     /* Go through RAWINPUT (WinXP and later) to find HID devices. */
-    if ((XP_InputDeviceList(NULL, &raw_device_count, sizeof(RAWINPUTDEVICELIST)) == -1) || (!raw_device_count)) {
+    if ((XP_GetRawInputDeviceList(NULL, &raw_device_count, sizeof(RAWINPUTDEVICELIST)) == -1) || (!raw_device_count)) {
         return SDL_FALSE;  /* oh well. */
     }
 
