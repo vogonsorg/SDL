@@ -1,5 +1,4 @@
 #include "WIN2000.h"
-#include "myList.h"
 
 /**kernel32**/
 BOOL XP_AttachConsole(DWORD dwProcessId) {
