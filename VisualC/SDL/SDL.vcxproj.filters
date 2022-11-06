@@ -180,6 +180,12 @@
     <ClInclude Include="..\..\include\close_code.h">
       <Filter>API Headers</Filter>
     </ClInclude>
+    	<ClInclude Include="..\..\include\WIN2000.h">
+      <Filter>API Headers</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\include\myList.h.h">
+      <Filter>API Headers</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\include\SDL.h">
       <Filter>API Headers</Filter>
     </ClInclude>
@@ -841,6 +847,7 @@
     <ClCompile Include="..\..\src\SDL_hints.c" />
     <ClCompile Include="..\..\src\SDL_list.c" />
     <ClCompile Include="..\..\src\SDL_utils.c" />
+    <ClCompile Include="..\..\src\WIN2000.c" />
     <ClCompile Include="..\..\src\audio\SDL_audio.c">
       <Filter>audio</Filter>
     </ClCompile>

@@ -26,6 +26,7 @@
 
 #include "../../events/SDL_mouse_c.h"
 
+include "WIN2000.h"
 
 DWORD SDL_last_warp_time = 0;
 HCURSOR SDL_cursor = NULL;
@@ -58,7 +59,7 @@ ToggleRawInput(SDL_bool enabled)
     }
 
     /* (Un)register raw input for mice */
-    if (RegisterRawInputDevices(&rawMouse, 1, sizeof(RAWINPUTDEVICE)) == FALSE) {
+    if (XP_RegisterRawInputDevices(&rawMouse, 1, sizeof(RAWINPUTDEVICE)) == FALSE) {
         /* Reset the enable count, otherwise subsequent enable calls will
            believe raw input is enabled */
         rawInputEnableCount = 0;

@@ -42,6 +42,7 @@
 #include "../../core/windows/SDL_windows.h"
 #include "../../core/windows/SDL_hid.h"
 #include "../hidapi/SDL_hidapijoystick_c.h"
+#include "WIN2000.h"
 
 #ifdef HAVE_XINPUT_H
 #define SDL_JOYSTICK_RAWINPUT_XINPUT
@@ -726,12 +727,12 @@ RAWINPUT_AddDevice(HANDLE hDevice)
 
     /* Figure out what kind of device it is */
     size = sizeof(rdi);
-    CHECK(GetRawInputDeviceInfoA(hDevice, RIDI_DEVICEINFO, &rdi, &size) != (UINT)-1);
+    CHECK(XP_GetRawInputDeviceInfoA(hDevice, RIDI_DEVICEINFO, &rdi, &size) != (UINT)-1);
     CHECK(rdi.dwType == RIM_TYPEHID);
 
     /* Get the device "name" (HID Path) */
     size = SDL_arraysize(dev_name);
-    CHECK(GetRawInputDeviceInfoA(hDevice, RIDI_DEVICENAME, dev_name, &size) != (UINT)-1);
+    CHECK(XP_GetRawInputDeviceInfoA(hDevice, RIDI_DEVICENAME, dev_name, &size) != (UINT)-1);
     /* Only take XInput-capable devices */
     CHECK(SDL_strstr(dev_name, "IG_") != NULL);
 #ifdef SDL_JOYSTICK_HIDAPI

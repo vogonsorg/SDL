@@ -24,6 +24,10 @@
 #include "core/windows/SDL_windows.h"
 #endif
 
+#if defined(__WIN32__)
+#include "WIN2000.h"
+#endif
+
 /* Simple log messages in SDL */
 
 #include "SDL_error.h"
@@ -395,7 +399,7 @@ SDL_LogOutput(void *userdata, int category, SDL_LogPriority priority,
 
         /* Maybe attach console and get stderr handle */
         if (consoleAttached == 0) {
-            attachResult = AttachConsole(ATTACH_PARENT_PROCESS);
+            attachResult = XP_AttachConsole(ATTACH_PARENT_PROCESS);
             if (!attachResult) {
                     attachError = GetLastError();
                     if (attachError == ERROR_INVALID_HANDLE) {
