@@ -373,12 +373,17 @@ HIDAPI_SetupDeviceDriver(SDL_HIDAPI_Device *device, SDL_bool *removed)
             SDL_hid_device *dev;
             char *path = SDL_strdup(device->path);
 
+            /* Wait a little bit for the device to initialize */
+            SDL_Delay(10);
+
             SDL_AssertJoysticksLocked();
             while (SDL_JoysticksLocked()) {
                 ++lock_count;
                 SDL_UnlockJoysticks();
             }
+
             dev = SDL_hid_open_path(path, 0);
+
             while (lock_count > 0) {
                 --lock_count;
                 SDL_LockJoysticks();

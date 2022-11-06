@@ -594,6 +594,7 @@ pointer_handle_button_common(struct SDL_WaylandInput *input, uint32_t serial,
     uint32_t sdl_button;
 
     if (window) {
+        SDL_VideoData *viddata = window->waylandData;
         switch (button) {
             case BTN_LEFT:
                 sdl_button = SDL_BUTTON_LEFT;
@@ -628,10 +629,13 @@ pointer_handle_button_common(struct SDL_WaylandInput *input, uint32_t serial,
             input->buttons_pressed &= ~(SDL_BUTTON(sdl_button));
         }
 
-        if (input->buttons_pressed != 0) {
-            window->sdlwindow->flags |= SDL_WINDOW_MOUSE_CAPTURE;
-        } else {
-            window->sdlwindow->flags &= ~SDL_WINDOW_MOUSE_CAPTURE;
+        /* Don't modify the capture flag in relative mode. */
+        if (!viddata->relative_mouse_mode) {
+            if (input->buttons_pressed != 0) {
+                window->sdlwindow->flags |= SDL_WINDOW_MOUSE_CAPTURE;
+            } else {
+                window->sdlwindow->flags &= ~SDL_WINDOW_MOUSE_CAPTURE;
+            }
         }
 
         Wayland_data_device_set_serial(input->data_device, serial);
